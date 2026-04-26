@@ -232,6 +232,20 @@ class MarsRover(gym.Env):
         T = np.zeros((nS, nA, nS), dtype=float)
         # TODO: Determine the transition matrix using the get_next_state function
         # and the transition probabilities P.
+        # iterate through all actions for all states
+        for s in range(nS):
+            for a in range(nA):
+                # save both possible outcomes
+                success_s2 = self.get_next_state(s, a)
+                fail_s2 = self.get_next_state(s, 1 - a)
+
+                p = self.P[s, a]
+
+                for s2 in range(nS):
+                    if s2 == success_s2:
+                        T[s, a, s2] = p
+                    elif s2 == fail_s2:
+                        T[s, a, s2] = 1 - p
 
         return T
 

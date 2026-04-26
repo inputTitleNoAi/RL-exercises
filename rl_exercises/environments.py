@@ -189,7 +189,17 @@ class MarsRover(gym.Env):
             The resulting state.
         """
         # TODO: Implement the environment dynamics to determine the next state
-        return state
+        # Next state is chosen based on action (left or right) and current state
+        # with special regards to bounds.
+        next_state = (
+            state + 1
+            if action == 1 and state < self.observation_space.n - 1
+            else state - 1
+            if action == 0 and state > 0
+            else state
+        )
+
+        return next_state
 
     def get_transition_matrix(
         self,
